@@ -1,4 +1,3 @@
-
 ARG JDK_VERSION=17-jdk-slim
 
 FROM openjdk:${JDK_VERSION}

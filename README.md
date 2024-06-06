@@ -74,54 +74,6 @@ O Dockerfile descreve como a imagem Docker para a aplicação Java será constru
 
 O arquivo `docker-compose.yml` descreve os serviços que compõem a aplicação e como eles interagem.
 
-### Estrutura do docker-compose.yml
-
-1. **Versão do Docker Compose**
-    ```yaml
-    version: "3"
-    ```
-
-2. **Serviços**
-    ```yaml
-    services:
-      app:
-        container_name: oceanstyle
-        build: .
-        ports:
-          - "8080:8080"
-        environment:
-          DB_HOST: oracle.fiap.com.br
-          DB_PORT: 1521
-          DB_NAME: orcl
-          DB_USER: rm98078
-          DB_PASSWORD: 261202
-          JAVA_OPTS: "-Xms256m -Xmx512m"
-        volumes:
-          - app_data:/path/to/app/data
-        networks:
-          - oceanstyle_network
-    ```
-    Define um serviço `app`:
-    - `container_name`: Nome do container.
-    - `build`: Diretório de construção do Dockerfile.
-    - `ports`: Mapeamento de portas (8080 do host para 8080 do container).
-    - `environment`: Variáveis de ambiente necessárias para a aplicação.
-    - `volumes`: Montagem de volumes para persistência de dados.
-    - `networks`: Rede em que o serviço será conectado.
-
-3. **Redes**
-    ```yaml
-    networks:
-      oceanstyle_network:
-    ```
-    Define uma rede chamada `oceanstyle_network`.
-
-4. **Volumes**
-    ```yaml
-    volumes:
-      app_data:
-    ```
-    Define um volume chamado `app_data`.
 
 ## Como usar
 
@@ -135,7 +87,41 @@ O arquivo `docker-compose.yml` descreve os serviços que compõem a aplicação 
     docker-compose up
     ```
 
-Isso irá construir a imagem, criar e iniciar os containers definidos no `docker-compose.yml`. A aplicação estará acessível na porta 8080 do host.
+3. **Acessar o Contêiner MySQL**
+    ```sh
+   docker-compose exec db mysql -u root -p
+    ```
+Isso abrirá um prompt interativo do MySQL. Digite a senha quando solicitado (a senha padrão é password).
+
+4. **Criar um Banco de Dados**
+    ```sh
+   CREATE DATABASE meu_banco_de_dados;
+    ```
+5. **Selecionar o Banco de Dados Recém-Criado**
+     ```sh
+   USE meu_banco_de_dados;
+    ```
+6. **Criar uma Tabela:**
+     ```sh
+CREATE TABLE minha_tabela (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255),
+    idade INT
+);
+    ```
+7. **Inserir dados na Tabela**
+     ```sh
+INSERT INTO minha_tabela (nome, idade) VALUE('Alice', 30), ('Bob', 35), ('Carol', 25);
+    ```
+8. **Verificar os Dados**
+     ```sh
+SELECT * FROM minha_tabela;
+    ```
+9. **Sair do Cliente MySQL**
+     ```sh
+exit;
+    ```
+Isso irá construir a imagem, criar e iniciar os containers definidos no `docker-compose.yml`.Podendo também testar a persistência de dados.
 
 ## Notas
 
